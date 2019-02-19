@@ -1,0 +1,1 @@
+# django-buyer-seller-demo
