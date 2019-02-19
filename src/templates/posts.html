@@ -1,0 +1,17 @@
+
+
+<h1>Hello There!</h1>
+{% block content %}
+  <h1>Posts</h1>
+  {% if post_list %}
+  <ul>
+    {% for post in post_list %}
+      <li>
+        <a href="{{ post.get_absolute_url }}">{{ post.username }}</a> ({{book.post}})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no posts in the library.</p>
+  {% endif %}       
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<p><a href="{% url 'logout' %}">logout</a></p><br>
+<p><a href="{{url_uri}}">{{url_name}}</a></p>
+{{ user.username }} - {{ user.first_name }}
+<!-- Main content will be place here -->
+
+
+<br><br>
+<h5>Posts</h5>
+{% for post in posts %}
+<div id="{{ post.id }}" style="min-height: 50px">
+  <h4 style="margin-bottom: 0px;">{{post.post}}</h4>
+
+  <!-- {{post.followed}} -->
+  {% if post.all == False %}
+    <label># {{ post.username }} | {{ post.usertype }}</label><br>
+    <label>Comments:</label>
+  {% else %}
+    <label># Created by {{ post.username }}</label><br>
+    {% if post.followed_post %}
+      <form method="post">
+        {% csrf_token %}
+        <input type='hidden' name="postid" value="{{post.id}}" />
+        <input type='hidden' name="unfollow" value="1" />
+        <button type="submit">Unfollow Post</button>
+      </form>
+    {% else %}
+      <form method="post">
+        {% csrf_token %}
+        <input type='hidden' name="postid" value="{{post.id}}" />
+        <button type="submit">Follow Post</button>
+      </form>
+    {% endif %}
+  {% endif %}
+  {% for comment in post.comments %}
+    <li>by {{comment.username}} | {{comment.comment}}</li>
+  {% endfor %}
+  {% if post.comment_up == True %}
+    <form method="post">
+      {% csrf_token %}
+      <input type='hidden' name="postid" value="{{ post.id }}" />
+      <input type='text' name="comment_msg" value="" />
+      <button type="submit">Comment</button>
+    </form>
+  {% endif %}
+</div>
+{% endfor %}
+
+{% if user_list %}
+<!-- Need to add more user list -->
+  <h5>Users</h5>
+  {% for user in user_list %}
+    <label># {{ user.username }} | {{ user.first_name }}</label>
+    {% if user.followed_user %}
+      <form method="post">
+        {% csrf_token %}
+        <input type='hidden' name="username" value="{{user.username}}" />
+        <input type='hidden' name="unfollow" value="1" />
+        <button type="submit">Unfollow User</button>
+      </form>
+    {% else %}
+      <form method="post">
+        {% csrf_token %}
+        <input type='hidden' name="username" value="{{user.username}}" />
+        <button type="submit">Follow User</button>
+      </form>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+<!-- Main content will be place here -->
+{% else %}
+  <h2>Demo Site : Buyer-Seller | Follow up</h2>
+  <!-- <h2>TEST</h2> -->
+  <a href="{% url 'login' %}">&nbsp;Login&nbsp;</a>
+  <a href="{% url 'signup' %}">&nbsp;Signup&nbsp;</a>
+{% endif %}
+{% endblock %}
