@@ -89,11 +89,11 @@ def publish_seller_view(request, isFollow=False):
         for post in posts:
             # print("id", obj.id)
             c_objs = []
-            comments = Comments.objects.filter(username=username)
+            comments = Comments.objects.filter(username=username, postid=post)
             c_objs += comments
             follow_objs = CommentMap.objects.filter(username=username)
             for f_obj in follow_objs:
-                comments = Comments.objects.filter(username=f_obj.username2)
+                comments = Comments.objects.filter(username=f_obj.username2, postid=post)
                 # print("Comment obj>>", c_objs)
                 c_objs += comments
             post.comments = c_objs

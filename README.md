@@ -5,6 +5,9 @@
 Prerequisites
 -------------
 1. Python 3.6.X or higher
+    > yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+    > yum -y install python36u
+    > python3.6 -V
 
 Installation steps
 ------------------
